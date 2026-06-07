@@ -1,4 +1,4 @@
-import AppError from "../AppError";
+import AppError from "../errors/AppError";
 
 const notFoundHandler = (req, res, next) => {
   if (req.accepts("json") && req.originalUrl.startsWith("/api")) {
