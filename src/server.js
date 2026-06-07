@@ -1,15 +1,15 @@
-const app = require("./app");
-const env = require("./config/env");
+import app from "./app.js";
+import config from "./config/env.js";
 
 async function connectToDB() {}
 
 const startServer = () => {
-  const port = env.app.port;
+  const port = config.app.port;
 
   app.listen(port, () => {
     console.log(
       `🚀 Server running in ${
-        env.app.nodeEnv ? "production" : "development"
+        config.app.nodeEnv ? "production" : "development"
       } mode on port ${port}`,
     );
   });
