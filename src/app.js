@@ -10,6 +10,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 
 //* 404 Handler
+app.use(notFoundHandler);
 
 //* Error Handler
 
