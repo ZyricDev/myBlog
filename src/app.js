@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import notFoundHandler from "./shared/middleware/notFound.js";
+import globalErrorHandler from "./shared/errors/globalErrorHandler.js";
+
 const app = express();
 
 app.use(cors());
@@ -13,5 +16,6 @@ app.use(cookieParser());
 app.use(notFoundHandler);
 
 //* Error Handler
+app.use(globalErrorHandler);
 
 export default app;

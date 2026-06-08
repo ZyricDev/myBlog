@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from "winston";
 
-import config from "../../config/env";
+import config from "../../config/env.js";
 
 const isProduction = config.app.nodeEnv === "production";
 
