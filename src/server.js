@@ -7,11 +7,10 @@ const startServer = () => {
   const port = config.app.port;
 
   app.listen(port, () => {
-    console.log(
-      `🚀 Server running in ${
-        config.app.nodeEnv ? "production" : "development"
-      } mode on port ${port}`,
-    );
+    const mode =
+      config.app.nodeEnv === "production" ? "production" : "development";
+
+    console.log(`🚀 Server running in ${mode} mode on port ${port}`);
   });
 };
 
