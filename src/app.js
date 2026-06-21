@@ -6,6 +6,7 @@ import notFoundHandler from "./shared/middleware/notFound.js";
 import globalErrorHandler from "./shared/errors/globalErrorHandler.js";
 
 import profileRoutes from "./modules/profile/profile.routes.js";
+import authRoutes from "./modules/auth/auth.routes.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 
 app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 //* 404 Handler
 app.use(notFoundHandler);

@@ -1,0 +1,15 @@
+import { Router } from "express";
+
+import validate from "../../shared/middleware/validate.js";
+import authController from "./auth.controller.js";
+import authValidation from "./auth.validation.js";
+
+const router = Router();
+
+router.post(
+  "/register",
+ validate(authValidation.register),
+  authController.register,
+);
+
+export default router;
