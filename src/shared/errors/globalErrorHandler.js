@@ -7,7 +7,7 @@ const globalErrorHandler = async (err, req, res, next) => {
   //TODO Delete Files in req
 
   const status = err.status || "error";
-  const statusCode = err.statusCode;
+  const statusCode = err.statusCode || 500;
   const message = err.message;
   const errors = err.errors;
 
