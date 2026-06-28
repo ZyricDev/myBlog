@@ -1,15 +1,15 @@
 import config from "../../config/env.js";
 
-const setTokenCookie = (res, nameCookie, token) => {
+const setTokenCookie = (res, tokenName, token) => {
   let maxAgeInMilliseconds;
-  if (nameCookie === "accessToken") {
+  if (tokenName === "accessToken") {
     maxAgeInMilliseconds = config.auth.accessTokenExpiresIn * 60 * 1000;
   } else {
     maxAgeInMilliseconds =
       config.auth.refreshTokenExpiresIn * 24 * 60 * 60 * 1000;
   }
 
-  res.cookie(nameCookie, token, {
+  res.cookie(tokenName, token, {
     httpOnly: true,
     secure: config.app.nodeEnv === "production",
     sameSite: "strict",
@@ -17,4 +17,8 @@ const setTokenCookie = (res, nameCookie, token) => {
   });
 };
 
-export default { setTokenCookie };
+const getTokenCookie = (req, tokenName) => {
+  return req.cookies ? req.cookies[tokenName] : null;
+};
+
+export default { setTokenCookie, getTokenCookie };
