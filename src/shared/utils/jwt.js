@@ -29,7 +29,31 @@ const generateRefreshToken = (user) => {
   return refreshToken;
 };
 
+const verifyAccessToken = (token) => {
+  try {
+    return jwt.verify(token, config.auth.accessTokenSecretKey);
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      throw new AppError("TokenExpired", 401);
+    }
+    throw new AppError("InvalidToken", 401);
+  }
+};
+
+const verifyRefreshToken = (token) => {
+  try {
+    return jwt.verify(token, config.auth.refreshTokenSecretKey);
+  } catch (err) {
+    throw new AppError(
+      "Invalid or expired refresh token. Please log in again.",
+      401,
+    );
+  }
+};
+
 export default {
   generateAccessToken,
   generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
 };
