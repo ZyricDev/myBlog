@@ -21,4 +21,15 @@ const register = async (req, res) => {
   );
 };
 
-export default { register };
+const login = async (req, res) => {
+  const userData = req.body;
+
+  const { user, accessToken, refreshToken } = await authService.login(userData);
+
+  cookie.setTokenCookie(res, "accessToken", accessToken);
+  cookie.setTokenCookie(res, "refreshToken", refreshToken);
+
+  return sendSuccess(res, "Login successfully", { user });
+};
+
+export default { register, login };

@@ -5,6 +5,28 @@ import AppError from "../../shared/errors/AppError.js";
 import jwt from "../../shared/utils/jwt.js";
 import config from "../../config/env.js";
 
+const _generateAuthTokens = (userObj) => {
+  const tokenPayload = {
+    id: userObj.id,
+    role: userObj.role,
+    tokenVersion: userObj.tokenVersion,
+  };
+
+  return {
+    accessToken: jwt.generateAccessToken(tokenPayload),
+    refreshToken: jwt.generateRefreshToken(tokenPayload),
+  };
+};
+
+const _getPublicProfile = (userObj) => {
+  return {
+    id: userObj.id,
+    name: userObj.name,
+    email: userObj.email,
+    role: userObj.role,
+  };
+};
+
 const register = async (userData) => {
   const emailExist = await authRepository.findUserByEmail(userData.email);
 
@@ -18,10 +40,11 @@ const register = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 10);
   const tokenVersion = 1;
 
-  const tokenPayload = { id: newUserId, role, tokenVersion };
-
-  const accessToken = jwt.generateAccessToken(tokenPayload);
-  const refreshToken = jwt.generateRefreshToken(tokenPayload);
+  const { accessToken, refreshToken } = _generateAuthTokens({
+    id: newUserId,
+    role,
+    tokenVersion,
+  });
 
   const finalUserObj = {
     id: newUserId,
@@ -30,14 +53,37 @@ const register = async (userData) => {
     password: hashedPassword,
     role,
     tokenVersion,
+    isBanned: false,
     refreshTokens: [refreshToken],
   };
 
   const newUser = await authRepository.createUser(finalUserObj);
 
-  const { password, refreshTokens, tokenVersion: _, ...user } = newUser;
-
-  return { user, accessToken, refreshToken };
+  return { user: _getPublicProfile(newUser), accessToken, refreshToken };
 };
 
-export default { register };
+const login = async (userData) => {
+  const { email, password } = userData;
+
+  const user = await authRepository.findUserByEmail(email);
+  if (!user) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  if (user.isBanned) {
+    throw new AppError("Your account has been suspended.", 403);
+  }
+
+  const { accessToken, refreshToken } = _generateAuthTokens(user);
+
+  await authRepository.addRefreshToken(user.id, refreshToken);
+
+  return { user: _getPublicProfile(user), refreshToken, accessToken };
+};
+
+export default { register, login };
