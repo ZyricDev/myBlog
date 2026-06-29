@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
 
 import config from "../../config/env.js";
 
@@ -17,16 +18,19 @@ const generateAccessToken = (user) => {
 };
 
 const generateRefreshToken = (user) => {
+  const jti = uuidv4();
+
   const refreshToken = jwt.sign(
     {
       id: user.id,
       tokenVersion: user.tokenVersion,
+      jti,
     },
     config.auth.refreshTokenSecretKey,
     { expiresIn: config.auth.refreshTokenExpiresIn + "d" },
   );
 
-  return refreshToken;
+  return { refreshToken, jti };
 };
 
 const verifyAccessToken = (token) => {
