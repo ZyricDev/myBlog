@@ -12,10 +12,10 @@ const _generateAuthTokens = (userObj) => {
     tokenVersion: userObj.tokenVersion,
   };
 
-  return {
-    accessToken: jwt.generateAccessToken(tokenPayload),
-    refreshToken: jwt.generateRefreshToken(tokenPayload),
-  };
+  const accessToken= jwt.generateAccessToken(tokenPayload),
+  const  {refreshToken, jti}= jwt.generateRefreshToken(tokenPayload),
+
+  return { accessToken, refreshToken, jti};
 };
 
 const _getPublicProfile = (userObj) => {
@@ -40,7 +40,7 @@ const register = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 10);
   const tokenVersion = 1;
 
-  const { accessToken, refreshToken } = _generateAuthTokens({
+  const { accessToken, refreshToken, jti } = _generateAuthTokens({
     id: newUserId,
     role,
     tokenVersion,
@@ -54,7 +54,7 @@ const register = async (userData) => {
     role,
     tokenVersion,
     isBanned: false,
-    refreshTokens: [refreshToken],
+    activeSessions: [jti],
   };
 
   const newUser = await authRepository.createUser(finalUserObj);
@@ -79,9 +79,9 @@ const login = async (userData) => {
     throw new AppError("Your account has been suspended.", 403);
   }
 
-  const { accessToken, refreshToken } = _generateAuthTokens(user);
+  const { accessToken, refreshToken, jti } = _generateAuthTokens(user);
 
-  await authRepository.addRefreshToken(user.id, refreshToken);
+  await authRepository.addSession(user.id, jti);
 
   return { user: _getPublicProfile(user), refreshToken, accessToken };
 };
