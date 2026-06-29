@@ -98,4 +98,38 @@ const logout = async (refreshToken) => {
   }
 };
 
-export default { register, login, logout };
+const refreshToken = async (oldRefreshToken) => {
+  const { id: userId, jti: oldJti } = jwt.verifyRefreshToken(oldRefreshToken);
+  if (!userId || !oldJti) {
+    throw new AppError("Invalid token payload", 401);
+  }
+
+  const user = await authRepository.findUserById(userId);
+  if (!user) {
+    throw new AppError("User not found", 401);
+  }
+
+  if (user.isBanned) {
+    throw new AppError("Your account has been suspended", 403);
+  }
+
+  const isValidJti = user.activeSessions.includes(oldJti);
+  if (!isValidJti) {
+    await authRepository.removeAllSession(userId);
+
+    throw new AppError("Token reuse detected. Please log in again.", 401);
+  }
+
+  const { accessToken, refreshToken, jti: newJti } = _generateAuthTokens(user);
+
+  await authRepository.replaceJti(userId, oldJti, newJti);
+
+  return { accessToken, refreshToken };
+};
+
+export default {
+  register,
+  login,
+  logout,
+  refreshToken,
+};

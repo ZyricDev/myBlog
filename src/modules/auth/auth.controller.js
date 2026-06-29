@@ -1,3 +1,4 @@
+import AppError from "../../shared/errors/AppError.js";
 import { sendSuccess } from "../../shared/utils/apiResponse.js";
 import cookie from "../../shared/utils/cookie.js";
 import authService from "./auth.service.js";
@@ -45,4 +46,31 @@ const logout = async (req, res) => {
   return sendSuccess(res, "Successfully logged out.");
 };
 
-export default { register, login, logout };
+const refreshToken = async (req, res, next) => {
+  try {
+    const oldRefreshToken = cookie.getTokenCookie(req, "refreshToken");
+    if (!oldRefreshToken) {
+      throw new AppError("No refresh token provided.", 401);
+    }
+
+    const { accessToken, refreshToken } =
+      await authService.refreshToken(oldRefreshToken);
+
+    cookie.setTokenCookie(res, "accessToken", accessToken);
+    cookie.setTokenCookie(res, "refreshToken", refreshToken);
+
+    return sendSuccess(res, "Tokens refreshed successfully");
+  } catch (err) {
+    res.clearCookie("accessToken", { httpOnly: true, sameSite: "strict" });
+    res.clearCookie("refreshToken", { httpOnly: true, sameSite: "strict" });
+
+    next(err);
+  }
+};
+
+export default {
+  register,
+  login,
+  logout,
+  refreshToken,
+};
