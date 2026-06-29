@@ -12,10 +12,10 @@ const _generateAuthTokens = (userObj) => {
     tokenVersion: userObj.tokenVersion,
   };
 
-  const accessToken= jwt.generateAccessToken(tokenPayload),
-  const  {refreshToken, jti}= jwt.generateRefreshToken(tokenPayload),
+  const accessToken = jwt.generateAccessToken(tokenPayload);
+  const { refreshToken, jti } = jwt.generateRefreshToken(tokenPayload);
 
-  return { accessToken, refreshToken, jti};
+  return { accessToken, refreshToken, jti };
 };
 
 const _getPublicProfile = (userObj) => {
@@ -86,4 +86,16 @@ const login = async (userData) => {
   return { user: _getPublicProfile(user), refreshToken, accessToken };
 };
 
-export default { register, login };
+const logout = async (refreshToken) => {
+  try {
+    const payload = jwt.verifyRefreshToken(refreshToken);
+
+    await authRepository.removeSession(payload.id, payload.jti);
+
+    return;
+  } catch (err) {
+    return;
+  }
+};
+
+export default { register, login, logout };

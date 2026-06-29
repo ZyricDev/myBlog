@@ -32,4 +32,17 @@ const login = async (req, res) => {
   return sendSuccess(res, "Login successfully", { user });
 };
 
-export default { register, login };
+const logout = async (req, res) => {
+  const refreshToken = cookie.getTokenCookie(req, "refreshToken");
+
+  if (refreshToken) {
+    await authService.logout(refreshToken);
+  }
+
+  res.clearCookie("accessToken", { httpOnly: true, sameSite: "strict" });
+  res.clearCookie("refreshToken", { httpOnly: true, sameSite: "strict" });
+
+  return sendSuccess(res, "Successfully logged out.");
+};
+
+export default { register, login, logout };
