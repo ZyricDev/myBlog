@@ -10,4 +10,9 @@ const getProfile = async () => {
 
   return profile;
 };
-export default { getProfile };
+
+const updateProfile = async (userData) => {
+  return await profileRepository.updateProfile(userData);
+};
+
+export default { getProfile, updateProfile, };

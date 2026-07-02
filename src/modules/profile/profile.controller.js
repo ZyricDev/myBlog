@@ -1,3 +1,4 @@
+import AppError from "../../shared/errors/AppError.js";
 import { sendSuccess } from "../../shared/utils/apiResponse.js";
 import profileService from "./profile.service.js";
 
@@ -7,4 +8,15 @@ const getProfile = async (req, res) => {
   return sendSuccess(res, "", profile);
 };
 
-export default { getProfile };
+const updateProfile = async (req, res) => {
+  const userData = req.body;
+
+  const user = await profileService.updateProfile(userData);
+
+  return sendSuccess(res, "Updated profile successfully", user)
+};
+
+export default {
+  getProfile,
+  updateProfile,
+};

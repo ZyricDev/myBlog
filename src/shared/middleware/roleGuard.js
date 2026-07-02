@@ -1,4 +1,4 @@
-import AppError from "../errors/AppError";
+import AppError from "../errors/AppError.js";
 
 const roleGuard = (role) => {
   return (req, res, next) => {
@@ -9,3 +9,5 @@ const roleGuard = (role) => {
     next();
   };
 };
+
+export default roleGuard;
