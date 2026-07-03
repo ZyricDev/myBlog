@@ -6,7 +6,7 @@ const isProduction = config.app.nodeEnv === "production";
 
 const globalErrorHandler = async (err, req, res, next) => {
   if (req.file) {
-    await fileManager.deleteFile(pathFile);
+    await fileManager.deleteFile(req.file.path);
   }
 
   const status = err.status || "error";
