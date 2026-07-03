@@ -1,10 +1,13 @@
 import logger from "../utils/logger.js";
 import config from "../../config/env.js";
+import fileManager from "../utils/fileManager.js";
 
 const isProduction = config.app.nodeEnv === "production";
 
 const globalErrorHandler = async (err, req, res, next) => {
-  //TODO Delete Files in req
+  if (req.file) {
+    await fileManager.deleteFile(pathFile);
+  }
 
   const status = err.status || "error";
   const statusCode = err.statusCode || 500;
