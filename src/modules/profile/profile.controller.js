@@ -32,8 +32,17 @@ const addSkill = async (req, res) => {
   return sendSuccess(res, "Added skill successfully", { skill: newSkill }, 201);
 };
 
+const deleteSkill = async (req, res) => {
+  const idSkill = req.params.id;
+
+  await profileService.deleteSkill(idSkill);
+
+  return sendSuccess(res, "Deleted skill successfully");
+};
+
 export default {
   getProfile,
   updateProfile,
   addSkill,
+  deleteSkill,
 };

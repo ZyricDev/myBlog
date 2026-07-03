@@ -22,7 +22,7 @@ const addSkill = async (skillData) => {
     id: profileRepository.generateNewId(),
     name,
     category,
-    startedA,
+    startedAt,
     iconPath,
   };
 
@@ -31,8 +31,19 @@ const addSkill = async (skillData) => {
   return newSkill;
 };
 
+const deleteSkill = async (idSkill) => {
+  const isDeletedSkill = await profileRepository.deleteSkill(idSkill);
+
+  if (!isDeletedSkill ) {
+    throw new AppError("Skill not found", 404);
+  }
+
+  return;
+};
+
 export default {
   getProfile,
   updateProfile,
   addSkill,
+  deleteSkill,
 };
