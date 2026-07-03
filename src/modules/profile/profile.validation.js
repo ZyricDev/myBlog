@@ -30,4 +30,41 @@ const updateProfile = {
   }),
 };
 
-export default { updateProfile,  };
+const skill = {
+  body: createBodyObjectSchema({
+    name: joi.string().trim().min(2).max(50).required().messages({
+      "string.base": "Skill name must be a string.",
+      "string.empty": "Skill name is required.",
+      "string.min": "Skill name must be at least 2 characters long.",
+      "string.max": "Skill name must not exceed 50 characters.",
+      "any.required": "Skill name is required.",
+    }),
+    category: joi
+      .string()
+      .trim()
+      .valid("tools", "database", "languages")
+      .required()
+      .messages({
+        "string.base": "Category must be a string.",
+        "string.empty": "Category is required.",
+        "any.only":
+          "Category must be either 'tools', 'database', or 'languages'.",
+        "any.required": "Category is required.",
+      }),
+
+    startedAt: joi
+      .string()
+      .trim()
+      .pattern(/^\d{4}-(0[1-9]|1[0-2])$/) 
+      .required() 
+      .messages({
+        "string.base": "Start date must be a string.",
+        "string.empty": "Start date is required.",
+        "string.pattern.base":
+          "Start date must be in YYYY-MM format (e.g., 2026-07).",
+        "any.required": "Start date is required.",
+      }),
+  }),
+};
+
+export default { updateProfile, skill };

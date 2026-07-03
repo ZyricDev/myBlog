@@ -5,6 +5,7 @@ import roleGuard from "../../shared/middleware/roleGuard.js";
 import validate from "../../shared/middleware/validate.js";
 import profileController from "./profile.controller.js";
 import profileValidation from "./profile.validation.js";
+import createUploader from "../../shared/utils/uploader.js";
 
 const router = Router();
 
@@ -18,5 +19,12 @@ router
     validate(profileValidation.updateProfile),
     profileController.updateProfile,
   );
+
+router.post(
+  "/skill",
+  createUploader("/icons", 1).single("icon"),
+  validate(profileValidation.skill),
+  profileController.addSkill,
+);
 
 export default router;

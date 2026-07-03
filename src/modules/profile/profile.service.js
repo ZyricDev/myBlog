@@ -11,8 +11,28 @@ const getProfile = async () => {
   return profile;
 };
 
-const updateProfile = async (userData) => {
-  return await profileRepository.updateProfile(userData);
+const updateProfile = async (profileData) => {
+  return await profileRepository.updateProfile(profileData);
 };
 
-export default { getProfile, updateProfile, };
+const addSkill = async (skillData) => {
+  const { name, category, startedAt, iconPath } = skillData;
+
+  const skill = {
+    id: profileRepository.generateNewId(),
+    name,
+    category,
+    startedA,
+    iconPath,
+  };
+
+  const newSkill = await profileRepository.addSkill(skill);
+
+  return newSkill;
+};
+
+export default {
+  getProfile,
+  updateProfile,
+  addSkill,
+};
