@@ -10,6 +10,7 @@ import fileManager from "./shared/utils/fileManager.js";
 import authRoutes from "./modules/auth/auth.routes.js";
 import profileRoutes from "./modules/profile/profile.routes.js";
 import adminProfileRoutes from "./modules/profile/admin.profile.routes.js";
+import projectRoutes from "./modules/project/project.routes.js";
 
 const app = express();
 
@@ -23,10 +24,10 @@ app.use(
   express.static(path.join(import.meta.dirname, "..", "uploads")),
 );
 
-
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/admin/profile", adminProfileRoutes);
+app.use("/api/v1/project", projectRoutes);
 
 //* 404 Handler
 app.use(notFoundHandler);
