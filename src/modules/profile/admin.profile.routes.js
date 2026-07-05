@@ -3,7 +3,7 @@ import { Router } from "express";
 import requireAuth from "../../shared/middleware/requireAuth.js";
 import roleGuard from "../../shared/middleware/roleGuard.js";
 import validate from "../../shared/middleware/validate.js";
-import validateId from "../../shared/middleware/validateId.js";
+import validateParams from "../../shared/middleware/validateParams.js";
 import profileController from "./profile.controller.js";
 import profileValidation from "./profile.validation.js";
 import createUploader from "../../shared/utils/uploader.js";
@@ -28,6 +28,10 @@ router.post(
   profileController.addSkill,
 );
 
-router.delete("/skill/:id", validateId("id"), profileController.deleteSkill);
+router.delete(
+  "/skill/:id",
+  validateParams("id"),
+  profileController.deleteSkill,
+);
 
 export default router;
