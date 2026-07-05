@@ -7,4 +7,15 @@ const getProjects = async (req, res) => {
   return sendSuccess(res, "", { projects });
 };
 
-export default { getProjects };
+const getProject = async (req, res) => {
+  const { slug } = req.params;
+
+  const project = await projectService.getProject(slug);
+
+  return sendSuccess(res, "", { project });
+};
+
+export default {
+  getProjects,
+  getProject,
+};
