@@ -21,7 +21,18 @@ const getProject = async (slug) => {
   return project;
 };
 
+const getProjectForAdmin = async (slug) => {
+  const project = await projectRepository.getProjectBySlug(slug);
+
+  if (!project || Object.keys(project).length === 0) {
+    throw new AppError("Project not found", 404);
+  }
+
+  return project;
+};
+
 export default {
   getProjects,
   getProject,
+  getProjectForAdmin,
 };
