@@ -1,7 +1,7 @@
 import AppError from "../../shared/errors/AppError.js";
 import projectRepository from "./project.repository.js";
 
-const getProjects = async (filter) => {
+const getProjects = async (filter = {}) => {
   const projects = await projectRepository.getProjects(filter);
 
   return projects;

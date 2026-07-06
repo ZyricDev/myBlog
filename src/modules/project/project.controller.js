@@ -15,7 +15,14 @@ const getProject = async (req, res) => {
   return sendSuccess(res, "", { project });
 };
 
+const getProjectsForAdmin = async (req, res) => {
+  const projects = await projectService.getProjects();
+
+  return sendSuccess(res, "", { projects });
+};
+
 export default {
   getProjects,
   getProject,
+  getProjectsForAdmin,
 };
