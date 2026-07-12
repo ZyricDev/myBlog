@@ -59,6 +59,16 @@ const deleteProject = async (req, res) => {
   return sendSuccess(res, "Deleted project successfully");
 };
 
+const toggleProjectStatus = async (req, res) => {
+  const { slug } = req.params;
+
+  const updatedStatus = await projectService.toggleProjectActiveStatus(slug);
+
+  return sendSuccess(res, "Updated project status successfully", {
+    isActive: updatedStatus,
+  });
+};
+
 export default {
   getProjects,
   getProject,
@@ -66,4 +76,5 @@ export default {
   getProjectsForAdmin,
   getProjectForAdmin,
   deleteProject,
+  toggleProjectStatus,
 };

@@ -64,10 +64,22 @@ const deleteProject = async (slug) => {
   return;
 };
 
+const toggleProjectActiveStatus = async (slug) => {
+  const project = await projectRepository.getProjectBySlug(slug);
+  if (!project) {
+    throw new AppError("Project not found", 404);
+  }
+
+  await projectRepository.updateProjectStatus(slug, !project.isActive);
+
+  return !project.isActive;
+};
+
 export default {
   getProjects,
   getProject,
   addProject,
   getProjectForAdmin,
   deleteProject,
+  toggleProjectActiveStatus,
 };

@@ -27,4 +27,10 @@ router
   .get(validateParams("slug"), projectController.getProjectForAdmin)
   .delete(validateParams("slug"), projectController.deleteProject);
 
+router.patch(
+  "/:slug/toggle-active",
+  validateParams("slug"),
+  projectController.toggleProjectStatus,
+);
+
 export default router;
