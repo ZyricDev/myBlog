@@ -79,6 +79,26 @@ const removeProjectImage = async (req, res) => {
   });
 };
 
+const addProjectImage = async (req, res) => {
+  const { slug } = req.params;
+  const projectImages = req.files;
+
+  if (!projectImages || projectImages.length === 0) {
+    throw new AppError("No images were uploaded.", 400);
+  }
+
+  const images = req.files.map((file) => ({
+    id: file.filename.split(".")[0],
+    url: `/${file.path}`,
+  }));
+
+  const newImages = await projectService.addProjectImage(slug, images);
+
+  return sendSuccess(res, "Added project images successfully", {
+    images: newImages,
+  });
+};
+
 export default {
   getProjects,
   getProject,
@@ -88,4 +108,5 @@ export default {
   deleteProject,
   toggleProjectStatus,
   removeProjectImage,
+  addProjectImage,
 };

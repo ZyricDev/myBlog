@@ -100,6 +100,23 @@ const removeProjectImage = async (slug, imageId) => {
   return newArrayImages;
 };
 
+const addProjectImage = async (slug, newImages) => {
+  const project = await projectRepository.getProjectBySlug(slug);
+  if (!project) {
+    throw new AppError("Project not found", 404);
+  }
+
+  const currentImages = project.images || [];
+
+  if (currentImages.length + newImages.length > 5) {
+    throw new AppError("A project can have a maximum of 5 images", 400);
+  }
+
+  const updatedImages = [...currentImages, ...newImages];
+
+  return await projectRepository.updateProjectImages(slug, updatedImages);
+};
+
 export default {
   getProjects,
   getProject,
@@ -108,4 +125,5 @@ export default {
   deleteProject,
   toggleProjectActiveStatus,
   removeProjectImage,
+  addProjectImage,
 };

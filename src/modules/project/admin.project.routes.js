@@ -40,4 +40,11 @@ router.delete(
   projectController.removeProjectImage,
 );
 
+router.post(
+  "/:slug/image",
+  validateParams("slug"),
+  createUploader("project", 5).array("images", 5),
+  projectController.addProjectImage,
+);
+
 export default router;
