@@ -33,4 +33,11 @@ router.patch(
   projectController.toggleProjectStatus,
 );
 
+router.delete(
+  "/:slug/image/:id",
+  validateParams("slug"),
+  validateParams("id"),
+  projectController.removeProjectImage,
+);
+
 export default router;

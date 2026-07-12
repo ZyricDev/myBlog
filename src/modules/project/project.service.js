@@ -1,6 +1,7 @@
 import slugify from "slugify";
 
 import AppError from "../../shared/errors/AppError.js";
+import fileManager from "../../shared/utils/fileManager.js";
 import projectRepository from "./project.repository.js";
 
 const getProjects = async (filter = {}) => {
@@ -75,6 +76,30 @@ const toggleProjectActiveStatus = async (slug) => {
   return !project.isActive;
 };
 
+const removeProjectImage = async (slug, imageId) => {
+  const project = await projectRepository.getProjectBySlug(slug);
+  if (!project) {
+    throw new AppError("Project not found", 404);
+  }
+
+  const image = project.images.find(
+    (image) => String(image.id) === String(imageId),
+  );
+
+  if (!image) {
+    throw new AppError("Image not found", 404);
+  }
+  const newArrayImages = project.images.filter(
+    (image) => String(image.id) !== String(imageId),
+  );
+
+  await projectRepository.updateProjectImages(slug, newArrayImages);
+
+  await fileManager.deleteFile(image.url);
+
+  return newArrayImages;
+};
+
 export default {
   getProjects,
   getProject,
@@ -82,4 +107,5 @@ export default {
   getProjectForAdmin,
   deleteProject,
   toggleProjectActiveStatus,
+  removeProjectImage,
 };

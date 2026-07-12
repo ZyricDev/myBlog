@@ -69,6 +69,16 @@ const toggleProjectStatus = async (req, res) => {
   });
 };
 
+const removeProjectImage = async (req, res) => {
+  const { slug, id: imageId } = req.params;
+
+  const images = await projectService.removeProjectImage(slug, imageId);
+
+  return sendSuccess(res, "Image removed from project successfully", {
+    images,
+  });
+};
+
 export default {
   getProjects,
   getProject,
@@ -77,4 +87,5 @@ export default {
   getProjectForAdmin,
   deleteProject,
   toggleProjectStatus,
+  removeProjectImage,
 };
