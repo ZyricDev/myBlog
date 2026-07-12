@@ -1,3 +1,5 @@
+import slugify from "slugify";
+
 import AppError from "../../shared/errors/AppError.js";
 import projectRepository from "./project.repository.js";
 
@@ -21,6 +23,26 @@ const getProject = async (slug) => {
   return project;
 };
 
+const addProject = async (dataProject) => {
+  const slug = slugify(dataProject.title, {
+    lower: true,
+    strict: true,
+    remove: /[^a-zA-Z0-9\s-]/g,
+  });
+
+  const slugExist = await projectRepository.getProjectBySlug(slug);
+  if (slugExist) {
+    throw new AppError("A project with this title already exists.", 409);
+  }
+
+  const newProject = await projectRepository.createProject({
+    slug,
+    ...dataProject,
+  });
+
+  return newProject;
+};
+
 const getProjectForAdmin = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
 
@@ -34,5 +56,6 @@ const getProjectForAdmin = async (slug) => {
 export default {
   getProjects,
   getProject,
+  addProject,
   getProjectForAdmin,
 };
