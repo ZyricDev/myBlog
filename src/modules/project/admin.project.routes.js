@@ -24,6 +24,7 @@ router
 
 router
   .route("/:slug")
-  .get(validateParams("slug"), projectController.getProjectForAdmin);
+  .get(validateParams("slug"), projectController.getProjectForAdmin)
+  .delete(validateParams("slug"), projectController.deleteProject);
 
 export default router;

@@ -51,10 +51,19 @@ const getProjectForAdmin = async (req, res) => {
   return sendSuccess(res, "", { project });
 };
 
+const deleteProject = async (req, res) => {
+  const { slug } = req.params;
+
+  await projectService.deleteProject(slug);
+
+  return sendSuccess(res, "Deleted project successfully");
+};
+
 export default {
   getProjects,
   getProject,
   addProject,
   getProjectsForAdmin,
   getProjectForAdmin,
+  deleteProject,
 };
