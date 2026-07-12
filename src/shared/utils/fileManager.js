@@ -12,7 +12,7 @@ const deleteFile = async (filePath) => {
       logger.warn(`[deleteFile] File not found, skipping: ${filePath}`);
       return;
     }
-    throw new AppError(`Failed to delete file: ${err.message}`, 500);
+    logger.error(`[deleteFile] Failed to delete file: ${err.message}`);
   }
 };
 

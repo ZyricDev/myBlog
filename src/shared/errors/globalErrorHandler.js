@@ -9,6 +9,18 @@ const globalErrorHandler = async (err, req, res, next) => {
     await fileManager.deleteFile(req.file.path);
   }
 
+  if (req.files) {
+    const filesArray = Array.isArray(req.files)
+      ? req.files
+      : Object.values(req.files).flat();
+
+    const deletePromises = filesArray.map((file) =>
+      fileManager.deleteFile(file.path),
+    );
+    
+    await Promise.all(deletePromises);
+  }
+
   const status = err.status || "error";
   const statusCode = err.statusCode || 500;
   const message = err.message;
