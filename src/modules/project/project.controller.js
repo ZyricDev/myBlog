@@ -46,7 +46,7 @@ const getProjectsForAdmin = async (req, res) => {
 const getProjectForAdmin = async (req, res) => {
   const { slug } = req.params;
 
-  const project = await projectService.getProjectForAdmin();
+  const project = await projectService.getProjectForAdmin(slug);
 
   return sendSuccess(res, "", { project });
 };
@@ -61,7 +61,7 @@ const updateProject = async (req, res) => {
   );
 
   return sendSuccess(res, "Updated profile successfully", {
-    project: updateProject,
+    project: updatedProject,
   });
 };
 

@@ -38,6 +38,8 @@ const addProject = async (dataProject) => {
 
   const newProject = await projectRepository.createProject({
     slug,
+    isActive: true,
+    isDelete: false,
     ...dataProject,
   });
 
@@ -60,18 +62,18 @@ const updateProject = async (slug, updateProjectData) => {
   if (!project || Object.keys(project).length === 0) {
     throw new AppError("Project not found", 404);
   }
-  
+
   const updatedProject = await projectRepository.updateProjectBySlug(
     slug,
     updateProjectData,
   );
-  
+
   return updatedProject;
 };
 
 const deleteProject = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
-  if (!project) {
+  if ( project?.isDelete || !project) {
     throw new AppError("Project not found", 404);
   }
 

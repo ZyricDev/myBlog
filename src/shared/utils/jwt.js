@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
+import AppError from "../errors/AppError.js";
 import config from "../../config/env.js";
 
 const generateAccessToken = (user) => {
