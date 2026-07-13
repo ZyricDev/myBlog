@@ -15,6 +15,10 @@ const updateProfile = async (profileData) => {
   return await profileRepository.updateProfile(profileData);
 };
 
+const replaceAvatar = async (avatarPath) => {
+  return await profileRepository.updateAvatarUrl(avatarPath);
+};
+
 const addSkill = async (skillData) => {
   const { name, category, startedAt, iconPath } = skillData;
 
@@ -34,7 +38,7 @@ const addSkill = async (skillData) => {
 const deleteSkill = async (idSkill) => {
   const isDeletedSkill = await profileRepository.deleteSkill(idSkill);
 
-  if (!isDeletedSkill ) {
+  if (!isDeletedSkill) {
     throw new AppError("Skill not found", 404);
   }
 
@@ -44,6 +48,7 @@ const deleteSkill = async (idSkill) => {
 export default {
   getProfile,
   updateProfile,
+  replaceAvatar,
   addSkill,
   deleteSkill,
 };

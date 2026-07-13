@@ -16,6 +16,17 @@ const updateProfile = async (req, res) => {
   return sendSuccess(res, "Updated profile successfully", { profile });
 };
 
+const updateAvatar = async (req, res) => {
+  const avatarPath = req.file?.path;
+  if (!avatarPath) {
+    throw new AppError("No avatar were uploaded.", 400);
+  }
+
+  const avatar = await profileService.replaceAvatar(`/${avatarPath}`);
+
+  return sendSuccess(res, "Updated Avatar successfully", { avatar });
+};
+
 const addSkill = async (req, res) => {
   const iconPath = req.file?.path;
   if (!iconPath) {
@@ -24,7 +35,7 @@ const addSkill = async (req, res) => {
 
   const skillData = {
     ...req.body,
-    iconPath,
+    iconPath: `/${iconPath}`,
   };
 
   const newSkill = await profileService.addSkill(skillData);
@@ -43,6 +54,7 @@ const deleteSkill = async (req, res) => {
 export default {
   getProfile,
   updateProfile,
+  updateAvatar,
   addSkill,
   deleteSkill,
 };

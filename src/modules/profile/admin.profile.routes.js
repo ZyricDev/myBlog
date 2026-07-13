@@ -21,6 +21,12 @@ router
     profileController.updateProfile,
   );
 
+router.patch(
+  "/avatar",
+  createUploader("/avatar", 5).single("avatar"),
+  profileController.updateAvatar,
+);
+
 router.post(
   "/skill",
   createUploader("/icons", 1).single("icon"),
