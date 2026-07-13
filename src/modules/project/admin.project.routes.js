@@ -25,6 +25,11 @@ router
 router
   .route("/:slug")
   .get(validateParams("slug"), projectController.getProjectForAdmin)
+  .put(
+    validateParams("slug"),
+    validate(projectValidation.addProject),
+    projectController.updateProject,
+  )
   .delete(validateParams("slug"), projectController.deleteProject);
 
 router.patch(

@@ -54,6 +54,21 @@ const getProjectForAdmin = async (slug) => {
   return project;
 };
 
+const updateProject = async (slug, updateProjectData) => {
+  const project = await projectRepository.getProjectBySlug(slug);
+
+  if (!project || Object.keys(project).length === 0) {
+    throw new AppError("Project not found", 404);
+  }
+  
+  const updatedProject = await projectRepository.updateProjectBySlug(
+    slug,
+    updateProjectData,
+  );
+  
+  return updatedProject;
+};
+
 const deleteProject = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
   if (!project) {
@@ -122,6 +137,7 @@ export default {
   getProject,
   addProject,
   getProjectForAdmin,
+  updateProject,
   deleteProject,
   toggleProjectActiveStatus,
   removeProjectImage,

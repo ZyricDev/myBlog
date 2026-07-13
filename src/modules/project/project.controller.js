@@ -51,6 +51,20 @@ const getProjectForAdmin = async (req, res) => {
   return sendSuccess(res, "", { project });
 };
 
+const updateProject = async (req, res) => {
+  const { slug } = req.params;
+  const updateProjectData = req.body;
+
+  const updatedProject = await projectService.updateProject(
+    slug,
+    updateProjectData,
+  );
+
+  return sendSuccess(res, "Updated profile successfully", {
+    project: updateProject,
+  });
+};
+
 const deleteProject = async (req, res) => {
   const { slug } = req.params;
 
@@ -105,6 +119,7 @@ export default {
   addProject,
   getProjectsForAdmin,
   getProjectForAdmin,
+  updateProject,
   deleteProject,
   toggleProjectStatus,
   removeProjectImage,
