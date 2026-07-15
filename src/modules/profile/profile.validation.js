@@ -42,13 +42,13 @@ const skill = {
     category: joi
       .string()
       .trim()
-      .valid("tools", "database", "languages")
+      .valid("tools", "databases", "languages")
       .required()
       .messages({
         "string.base": "Category must be a string.",
         "string.empty": "Category is required.",
         "any.only":
-          "Category must be either 'tools', 'database', or 'languages'.",
+          "Category must be either 'tools', 'databases', or 'languages'.",
         "any.required": "Category is required.",
       }),
 

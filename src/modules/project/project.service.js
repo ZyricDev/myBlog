@@ -13,7 +13,11 @@ const getProjects = async (filter = {}) => {
 const getProject = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
 
-  if (!project || Object.keys(project).length === 0) {
+  if (
+    project?.isDelete === true ||
+    !project ||
+    Object.keys(project).length === 0
+  ) {
     throw new AppError("Project not found", 404);
   }
 
@@ -49,7 +53,11 @@ const addProject = async (dataProject) => {
 const getProjectForAdmin = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
 
-  if (!project || Object.keys(project).length === 0) {
+  if (
+    project?.isDelete === true ||
+    !project ||
+    Object.keys(project).length === 0
+  ) {
     throw new AppError("Project not found", 404);
   }
 
@@ -59,7 +67,11 @@ const getProjectForAdmin = async (slug) => {
 const updateProject = async (slug, updateProjectData) => {
   const project = await projectRepository.getProjectBySlug(slug);
 
-  if (!project || Object.keys(project).length === 0) {
+  if (
+    project?.isDelete === true ||
+    !project ||
+    Object.keys(project).length === 0
+  ) {
     throw new AppError("Project not found", 404);
   }
 
@@ -73,7 +85,7 @@ const updateProject = async (slug, updateProjectData) => {
 
 const deleteProject = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
-  if ( project?.isDelete || !project) {
+  if (project?.isDelete || !project) {
     throw new AppError("Project not found", 404);
   }
 
@@ -84,7 +96,7 @@ const deleteProject = async (slug) => {
 
 const toggleProjectActiveStatus = async (slug) => {
   const project = await projectRepository.getProjectBySlug(slug);
-  if (!project) {
+  if (project?.isDelete === true || !project) {
     throw new AppError("Project not found", 404);
   }
 
@@ -95,7 +107,7 @@ const toggleProjectActiveStatus = async (slug) => {
 
 const removeProjectImage = async (slug, imageId) => {
   const project = await projectRepository.getProjectBySlug(slug);
-  if (!project) {
+  if (project?.isDelete === true || !project) {
     throw new AppError("Project not found", 404);
   }
 
@@ -119,7 +131,7 @@ const removeProjectImage = async (slug, imageId) => {
 
 const addProjectImage = async (slug, newImages) => {
   const project = await projectRepository.getProjectBySlug(slug);
-  if (!project) {
+  if (project?.isDelete === true || !project) {
     throw new AppError("Project not found", 404);
   }
 
