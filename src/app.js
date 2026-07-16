@@ -19,7 +19,7 @@ import adminProjectRoutes from "./modules/project/admin.project.routes.js";
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({ origin: "https://zyric.ir", credentials: true }));
 app.use(createRateLimiter(15, 200));
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));

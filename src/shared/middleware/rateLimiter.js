@@ -1,9 +1,9 @@
 import rateLimit from "express-rate-limit";
 import AppError from "../errors/AppError.js";
 
-const createRateLimiter = (windowMs, max) => {
+const createRateLimiter = (windowMinutes, max) => {
   return rateLimit({
-    windowMs: windowMs * 60 * 1000,
+    windowMs: windowMinutes * 60 * 1000,
     max,
     standardHeaders: true,
     legacyHeaders: false,

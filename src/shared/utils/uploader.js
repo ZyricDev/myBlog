@@ -35,8 +35,7 @@ const createUploader = (folderName, maxSizeInMB = 3) => {
     const allowedMimeTypes = [
       "image/jpeg",
       "image/png",
-      "image/webp",
-      "image/svg+xml",
+      "image/webp"
     ];
     if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true);
